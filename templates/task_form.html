@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Task</title>
+</head>
+<body>
+
+<h2>Add Task</h2>
+
+<form action="{{ url_for('new_task') }}" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.description.label }}<br>
+        {{ form.description(size=32) }}
+    </p>
+    <p>
+        {{ form.priority.label }}<br>
+        {{ form.priority() }}
+    </p>
+    <p>
+        {{ form.is_completed.label }}<br>
+        {{ form.is_completed() }}
+    </p>
+    <p>
+        {{ form.completed_at.label }}<br>
+        {{ form.completed_at() }}
+    </p>
+    <p>
+        <input type="submit" value="Add Task">
+    </p>
+</form>
+
+</body>
+</html>

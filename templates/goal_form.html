@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Goal</title>
+</head>
+<body>
+
+<h2>Add Goal</h2>
+
+<form action="{{ url_for('new_goal') }}" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.description.label }}<br>
+        {{ form.description(size=32) }}
+    </p>
+    <p>
+        {{ form.type.label }}<br>
+        {{ form.type() }}
+    </p>
+    <p>
+        {{ form.effort_points.label }}<br>
+        {{ form.effort_points(size=32) }}
+    </p>
+    <p>
+        <input type="submit" value="Add Goal">
+    </p>
+</form>
+
+</body>
+</html>

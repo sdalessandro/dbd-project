@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Timeslot</title>
+</head>
+<body>
+
+<h2>Add Timeslot</h2>
+
+<form action="{{ url_for('new_timeslot') }}" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.label.label }}<br>
+        {{ form.label(size=32) }}
+    </p>
+    <p>
+        {{ form.start_time.label }}<br>
+        {{ form.start_time(size=32) }}
+    </p>
+    <p>
+        {{ form.end_time.label }}<br>
+        {{ form.end_time(size=32) }}
+    </p>
+    <p>
+        <input type="submit" value="Add Timeslot">
+    </p>
+</form>
+
+</body>
+</html>
