@@ -3,6 +3,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, IntegerField, BooleanField, DateTimeField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.fields import HiddenField
+from wtforms.validators import Optional
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=20)])
@@ -11,7 +14,6 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
 class LoginForm(FlaskForm):
@@ -29,7 +31,7 @@ class TaskForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')])
     is_completed = BooleanField('Is Completed')
-    completed_at = DateTimeField('Completed At')
+    completed_at = StringField('Completed At')
     submit = SubmitField('Save')
 
 class TimeSlotForm(FlaskForm):

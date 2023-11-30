@@ -47,12 +47,13 @@ class Task(db.Model):
     description = db.Column(db.Text, nullable=False)
     priority = db.Column(db.String(10))
     is_completed = db.Column(db.Boolean, default=False)
-    completed_at = db.Column(db.DateTime)
+    completed_at = db.Column(db.String)  # Change to String
     
     goal_id = db.Column(db.Integer, db.ForeignKey('goals.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     timeslots = db.relationship('TimeSlot', backref='task', lazy=True)
+
 
 class TimeSlot(db.Model):
     __tablename__ = 'timeslots'

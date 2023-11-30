@@ -2,9 +2,52 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <style>
+        /* Add this style section */
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for the DOM to be fully loaded before attaching the event listeners
+
+            // Attach the event listeners to all task elements with the class 'task'
+            const tasks = document.querySelectorAll('.task');
+            tasks.forEach(task => {
+                task.addEventListener('click', function() {
+                    
+                    // Toggle the completed class
+                    this.classList.toggle('completed');
+
+                    // Move completed tasks to the bottom of the list
+                    const parent = this.parentElement;
+                    parent.appendChild(this);
+                });
+            });
+        });
+        function filterTasksByPriority() {
+            const priorityFilter = document.getElementById('priority-filter');
+            const selectedPriority = priorityFilter.value;
+            const tasks = document.querySelectorAll('.task');
+            i=0
+            tasks.forEach(task => {
+                const taskPriority = task.dataset.priority.trim();  // Convert to lowercase and trim spaces
+                console.log(taskPriority);
+                if (selectedPriority === 'all' || taskPriority.startsWith(selectedPriority)) {
+                    task.style.display = 'block';
+                } else {
+                    task.style.display = 'none';
+                }
+                i++
+            });
+    }
+    </script>
+    
 </head>
 <body>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script>
 <h1>Hello, {{ user.username }}!</h1>
 
 <h2>Your Goals</h2>
@@ -15,11 +58,23 @@
 </ul>
 
 <h2>Your Tasks</h2>
-<ul>
+<label for="priority-filter">Filter by Priority:</label>
+<select id="priority-filter" onchange="filterTasksByPriority()">
+    <option value="all">All</option>
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+</select>
+<ul id="tasks-list">
     {% for task in tasks %}
-        <li>{{ task.description }} (Priority: {{ task.priority }})</li>
+        <li id="task-{{ task.id }}" class="task" data-priority="{{ task.priority }}">
+            <input type="checkbox" class="task-checkbox" {% if task.is_completed %}checked{% endif %} data-task-id="{{ task.id }}">
+            {{ task.description }} <b>Priority:</b> {{ task.priority }} <b>Complete by:</b> {{task.completed_at}}
+        </li>
     {% endfor %}
 </ul>
+
+
 
 <h2>Your TimeSlots</h2>
 <ul>
@@ -27,8 +82,56 @@
         <li>{{ slot.label }} (From: {{ slot.start_time }} To: {{ slot.end_time }})</li>
     {% endfor %}
 </ul>
+<!-- dashboard.html -->
+
+
+<!-- Goal Form -->
+<form method="POST" action="{{ url_for('new_goal') }}">
+    {{ goal_form.hidden_tag() }}
+    <h2>Add Goal</h2>
+    <!-- Goal form fields -->
+    {{ goal_form.description.label }} {{ goal_form.description }}
+    {{ goal_form.type.label }} {{ goal_form.type }}
+    {{ goal_form.effort_points.label }} {{ goal_form.effort_points }}
+    <button type="submit">Add Goal</button>
+</form>
+
+
+<!-- Task Form -->
+<form method="POST" action="{{ url_for('new_task') }}">
+    {{ task_form.hidden_tag() }}
+    <h2>Add Task</h2>
+    <!-- Task form fields -->
+    {{ task_form.description.label }} {{ task_form.description }}
+    {{ task_form.priority.label }} {{ task_form.priority }}
+    {{ task_form.is_completed.label }} {{ task_form.is_completed }}
+    <input type="text" id="completed_at" name="completed_at" data-input placeholder="Complete by date">
+    <button type="submit">Add Task</button>
+
+    <!-- Initialize flatpickr on the completed_at input field -->
+    <script>
+        flatpickr("#completed_at", { enableTime: false, dateFormat: "Y-m-d" });
+    </script>
+</form>
+
+<!-- TimeSlot Form -->
+<form method="POST" action="{{ url_for('new_timeslot') }}">
+    {{ timeslot_form.hidden_tag() }}
+    <h2>Add Time Slot</h2>
+    <!-- TimeSlot form fields -->
+    {{ timeslot_form.label.label }} {{ timeslot_form.label }}
+    {{ timeslot_form.start_time.label }} {{ timeslot_form.start_time }}
+    {{ timeslot_form.end_time.label }} {{ timeslot_form.end_time }}
+    <button type="submit">Add Time Slot</button>
+</form>
+
+
+<!-- Existing Dashboard Content -->
+
 
 <p><a href="{{ url_for('logout') }}">Logout</a></p>
+<!-- Add these to the head section of your HTML file -->
+
 
 </body>
 </html>
