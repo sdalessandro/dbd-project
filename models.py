@@ -60,8 +60,8 @@ class TimeSlot(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     label = db.Column(db.String(50))
-    start_time = db.Column(db.DateTime, nullable=False)
-    end_time = db.Column(db.DateTime, nullable=False)
+    start_time = db.Column(db.String, nullable=False)
+    end_time = db.Column(db.String, nullable=False)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))

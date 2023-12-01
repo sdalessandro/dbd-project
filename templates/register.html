@@ -1,7 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007BFF;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
@@ -10,27 +67,27 @@
 <form action="{{ url_for('register') }}" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.username.label }}<br>
+        <label for="username">{{ form.username.label }}</label>
         {{ form.username(size=32) }}
     </p>
     <p>
-        {{ form.first_name.label }}<br>
+        <label for="first_name">{{ form.first_name.label }}</label>
         {{ form.first_name(size=32) }}
     </p>
     <p>
-        {{ form.last_name.label }}<br>
+        <label for="last_name">{{ form.last_name.label }}</label>
         {{ form.last_name(size=32) }}
     </p>
     <p>
-        {{ form.email.label }}<br>
+        <label for="email">{{ form.email.label }}</label>
         {{ form.email(size=32) }}
     </p>
     <p>
-        {{ form.phone_number.label }}<br>
+        <label for="phone_number">{{ form.phone_number.label }}</label>
         {{ form.phone_number(size=32) }}
     </p>
     <p>
-        {{ form.password.label }}<br>
+        <label for="password">{{ form.password.label }}</label>
         {{ form.password(size=32) }}
     </p>
     <p>
