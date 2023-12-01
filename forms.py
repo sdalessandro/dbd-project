@@ -36,6 +36,6 @@ class TaskForm(FlaskForm):
 
 class TimeSlotForm(FlaskForm):
     label = StringField('Label', validators=[DataRequired()])
-    start_time = DateTimeField('Start Time', validators=[DataRequired()])
-    end_time = DateTimeField('End Time', validators=[DataRequired()])
+    start_time = StringField('Start Time', validators=[DataRequired()])
+    end_time = StringField('End Time', validators=[DataRequired()])
     submit = SubmitField('Save')
