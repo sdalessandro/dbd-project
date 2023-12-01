@@ -169,14 +169,43 @@ def user_schedule(user_id):
     timeslots = TimeSlot.query.filter_by(user_id=user.id).all()
     return render_template('shared_schedule.html', user=user, goals=goals, tasks=tasks, timeslots=timeslots)
 
-@app.route('/complete_task/<int:task_id>', methods=['PUT'])
-def complete_task(task_id):
-    task = Task.query.get_or_404(task_id)
-    is_completed = request.json.get('isCompleted', False)
-    task.is_completed = is_completed
+@app.route('/complete_tasks', methods=['POST'])
+def complete_tasks():
+    task_ids = request.form.getlist('task_ids')
+    tasks = Task.query.filter(Task.id.in_(task_ids))
+    for task in tasks:
+        task.is_completed = True
     db.session.commit()
 
-    return jsonify({'message': 'Task completion status updated successfully'})
+    flash('Selected tasks marked as completed', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/task/edit/<int:task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    form = TaskForm(obj=task)
+
+    if form.validate_on_submit():
+        task.description = form.description.data
+        task.priority = form.priority.data
+        task.is_completed = form.is_completed.data
+        task.completed_at = form.completed_at.data
+
+        db.session.commit()
+        flash('Task updated successfully!', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('task_form.html', form=form)
+
+
+@app.route('/task/delete/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    db.session.delete(task)
+    db.session.commit()
+    flash('Task deleted successfully!', 'success')
+    return redirect(url_for('dashboard'))
+
 
     
 @app.route('/logout')
