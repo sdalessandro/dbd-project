@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Task</title>
+    <title>{% if task_id %}Edit Task{% else %}Add Task{% endif %}</title>
 </head>
 <body>
 
-<h2>Add Task</h2>
+<h2>{% if task_id %}Edit Task{% else %}Add Task{% endif %}</h2>
 
-<form action="{{ url_for('new_task') }}" method="post">
+<form action="{{ url_for('edit_task', task_id=task_id) if task_id else url_for('new_task') }}" method="post">
     {{ form.hidden_tag() }}
     <p>
         {{ form.description.label }}<br>
@@ -26,7 +26,7 @@
         {{ form.completed_at() }}
     </p>
     <p>
-        <input type="submit" value="Add Task">
+        <input type="submit" value="{% if task_id %}Update Task{% else %}Add Task{% endif %}">
     </p>
 </form>
 

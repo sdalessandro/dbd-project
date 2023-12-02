@@ -24,7 +24,7 @@ class LoginForm(FlaskForm):
 class GoalForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     type = SelectField('Type', choices=[('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly'), ('yearly', 'Yearly')], validators=[DataRequired()])
-    effort_points = IntegerField('Effort Points')
+    effort_points = IntegerField('Effort Points', validators=[DataRequired()])
     submit = SubmitField('Save')
 
 class TaskForm(FlaskForm):

@@ -3,11 +3,16 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import CheckConstraint
+from sqlalchemy import and_, text
 
 db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
+    __table_args__ = (
+        CheckConstraint('LENGTH(phone_number) = 10', name='check_phone_number_length'),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -33,7 +38,7 @@ class Goal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.Text, nullable=False)
     type = db.Column(db.String(10), nullable=False)
-    effort_points = db.Column(db.Integer)
+    effort_points = db.Column(db.Integer, CheckConstraint('effort_points >= 0', name='positive_effort_points'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -62,6 +67,7 @@ class TimeSlot(db.Model):
     label = db.Column(db.String(50))
     start_time = db.Column(db.String, nullable=False)
     end_time = db.Column(db.String, nullable=False)
+    CheckConstraint('end_time > start_time', name='end_time_after_start_time')
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
